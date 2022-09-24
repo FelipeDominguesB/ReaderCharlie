@@ -1,0 +1,16 @@
+<section>
+    <button mat-flat-button color="primary" (click)="addFolder()">Adicionar pasta</button>
+    <button mat-flat-button color="primary" (click)="fileUpload.click()">Adicionar arquivos</button>
+    <input type="file" multiple="multiple" accept=".png, .jpg, .jpeg, .gif, .mp4" (change)="addFiles($event)"  #fileUpload>
+    
+    <div class="folder-collection">
+        <div class="folder" *ngFor="let folder of folders" (click)="selectFolder(folder)" (dblclick)="showFolderDetails()" [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
+            <img src="../../assets/images/folder.png">
+            <label>{{ folder.name }}</label>
+        </div>
+    
+    </div>
+    
+  
+    <a routerLink="/folders"></a>
+</section>

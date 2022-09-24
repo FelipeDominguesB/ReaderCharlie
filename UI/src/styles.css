@@ -1,0 +1,15 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+app-auth{
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body.mat-typography{
+    font: 400;
+}

@@ -1,0 +1,32 @@
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-card class="mat-elevation-z8">
+        <mat-card-header>
+            <mat-card-title>Entrar</mat-card-title>
+        </mat-card-header>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card-content>
+          <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="teste@exemplo.com" formControlName='email' required>
+            <mat-error *ngIf="f.email.invalid">{{getEmailErrorMessage()}}</mat-error>
+            
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input matInput formControlName='password' [type]="'password'" required>
+            <mat-error *ngIf="f.password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <mat-divider [inset]="true"></mat-divider>
+
+        </mat-card-content>
+        <mat-label>Não possuí acesso? Cadastre-se!</mat-label>
+        <div class="buttons-div">
+          <button mat-raised-button color="primary" type="submit" [disabled]="f.password.invalid || f.email.invalid">Login</button>
+          <button mat-raised-button color="primary">Esqueci minha senha</button>
+
+        </div>
+    </mat-card>
+
+</form>
