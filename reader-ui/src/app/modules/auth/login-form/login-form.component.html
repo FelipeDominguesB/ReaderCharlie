@@ -1,32 +1,24 @@
+<form [formGroup]="loginForm">
 
-<form [formGroup]="loginForm" >
-    <mat-card class="mat-elevation-z8">
-        <mat-card-header>
-            <mat-card-title>Entrar</mat-card-title>
-        </mat-card-header>
-        <mat-divider [inset]="true"></mat-divider>
-        <mat-card-content>
-          <mat-form-field>
-            <mat-label>E-mail</mat-label>
-            <input matInput placeholder="teste@exemplo.com" formControlName='email' required>
-            <mat-error *ngIf="f.email.invalid">{{getEmailErrorMessage()}}</mat-error>
-            
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Senha</mat-label>
-            <input matInput formControlName='password' [type]="'password'" required>
-            <mat-error *ngIf="f.password.invalid">{{getPasswordErrorMessage()}}</mat-error>
-          </mat-form-field>
+  <mat-form-field>
+    <mat-label>E-mail</mat-label>
+    <input matInput placeholder="teste@exemplo.com" formControlName='email' required>
+    <mat-error *ngIf="f.email.invalid">{{getEmailErrorMessage()}}</mat-error>
 
-          <mat-divider [inset]="true"></mat-divider>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Senha</mat-label>
+    <input matInput formControlName='password' [type]="'password'" required>
+    <mat-error *ngIf="f.password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+  </mat-form-field>
 
-        </mat-card-content>
-        <mat-label>Não possui acesso? <a routerLink="sign-up">Cadastre-se!</a></mat-label>
-        <div class="buttons-div">
-          <button mat-raised-button color="primary" (click)="this.firebaseAuthentication.login(f.email.value, f.password.value)" [disabled]="f.password.invalid || f.email.invalid">Login</button>
-          <button mat-raised-button color="primary">Esqueci minha senha</button>
 
-        </div>
-    </mat-card>
+  <div class="buttons-div">
+    <button mat-raised-button color="primary"
+    (click)="this.firebaseAuthentication.login(f.email.value, f.password.value)"
+    [disabled]="f.password.invalid || f.email.invalid">Login</button>
+    <button mat-raised-button color="primary">Esqueci minha senha</button>
+  </div>
+  <mat-label>Não possui acesso? <a routerLink="sign-up">Cadastre-se!</a></mat-label>
 
 </form>

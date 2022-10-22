@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<mat-card class="form-card">
+    <mat-card-title>{{this.route.url.includes("sign-up") ? "Cadastre-se" : "Login"}}</mat-card-title>
+    <mat-card-content>
+        <router-outlet></router-outlet>
+    </mat-card-content>
+</mat-card>
+

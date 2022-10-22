@@ -21,7 +21,7 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    localStorage.clear();
+    this.firebaseAuthentication.signOut();
   }
 
   public getEmailErrorMessage() {

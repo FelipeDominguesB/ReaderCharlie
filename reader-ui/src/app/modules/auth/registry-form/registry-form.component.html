@@ -1,1 +1,24 @@
-<p>registry-form works!</p>
+<form [formGroup]="registryForm">
+
+    <mat-form-field>
+        <mat-label>Nome de usuário</mat-label>
+        <input matInput id="name" formControlName='userName' required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>E-mail</mat-label>
+      <input matInput id="email" placeholder="teste@exemplo.com" name="email" autocomplete="email" formControlName='email' required>
+  
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Senha</mat-label>
+      <input matInput id="password" formControlName='password' [type]="'password'" required>
+    </mat-form-field>
+  
+  
+    <div class="buttons-div">
+        <button mat-raised-button color="primary" style="width: 80%;">Criar conta</button>
+    </div>
+    <mat-label>Já possui uma conta? <a routerLink="sign-up">Faça login!</a></mat-label>
+    
+  
+  </form>

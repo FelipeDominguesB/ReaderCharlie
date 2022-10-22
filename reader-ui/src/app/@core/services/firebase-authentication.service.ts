@@ -9,24 +9,27 @@ import { resolve } from 'dns';
 
 import { Observable, observable, from } from 'rxjs';
 import { FirebaseToken } from 'src/app/@shared/models/FirebaseToken';
-import { User } from 'src/app/@shared/models/User';
+import { User, UserProperties } from 'src/app/@shared/models/User';
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthenticationService {
 
+
+  userData: any;
   constructor(private angularFireAuth: AngularFireAuth, private router: Router) { }
 
 
   login(email: string, password: string) {
       this.angularFireAuth.signInWithEmailAndPassword(email, password)
         .then(() => {
-      
+          
           return this.saveInformationOnStorage();
         })
         .then(() => {
 
           setTimeout(() =>{
+            console.log("Entrei no navigate")
             this.router.navigate(['/folders']);
           }, 100);
 
@@ -51,13 +54,8 @@ export class FirebaseAuthenticationService {
       });
 
       this.angularFireAuth.user.subscribe(loginInfo => {
-        let user: User = {
-          email: loginInfo!.email!,
-          userName: loginInfo!.displayName!,
-          uid: loginInfo!.uid,
-        };
-
-        localStorage.setItem('user', JSON.stringify(user));
+        this.userData = loginInfo;
+        localStorage.setItem('user', JSON.stringify(this.userData));
       }, err => {
         reject("Erro ao salvar informação")
       });
@@ -95,6 +93,17 @@ export class FirebaseAuthenticationService {
   }
 
 
+  getUserProperty(propName: UserProperties) {
+    let userProperty: any;
+
+    this.angularFireAuth.user.subscribe(userData =>{
+        userProperty = userData?.[propName];
+    });
+
+    return userProperty;
+    
+  }
+
   get userId() {
     let user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -104,7 +113,6 @@ export class FirebaseAuthenticationService {
 
     return user.uid;
   }
-
   signOut() {
     this.angularFireAuth.signOut().then(() => {
       localStorage.clear();

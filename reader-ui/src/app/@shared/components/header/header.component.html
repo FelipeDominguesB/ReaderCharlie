@@ -2,7 +2,7 @@
     <span>READER CHARLIE</span>
     <span style="flex: 1 1 auto;"></span>
     <div class="account_icon" *ngIf="authService.isAuthenticated()">
-        <span >Felipe Domingues Bonfim</span>
+        <span *ngIf="this.authService.userData as user">{{(user.displayName) ? user.displayName : 'User'}}</span>
         <button mat-icon-button [matMenuTriggerFor]="profileMenu">
             <mat-icon>account_circle</mat-icon>
         </button>

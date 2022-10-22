@@ -1,8 +1,17 @@
 export class User{
     constructor() {}
 
-    public userName: string;
-    public email: string;
-    public uid: string;
+    uid: string;
+    email: string;
+    displayName: string;
+    photoURL?: string | null;
 
+
+}
+
+export enum UserProperties{
+    Email = "email",
+    DisplayName = "displayName",
+    PhotoUrl = "photoUrl",
+    Uid = "uid"
 }

@@ -9,6 +9,7 @@ import { finalize, map } from 'rxjs/operators';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { FolderDetailsComponent } from 'src/app/modules/folders/folder-details/folder-details.component';
 import { ThrowStmt } from '@angular/compiler';
+import { UserProperties } from 'src/app/@shared/models/User';
 @Injectable({
     providedIn: 'root'
 })
@@ -18,19 +19,18 @@ export class FirebaseFoldersService {
     userId: string;
     constructor(private storage: AngularFireStorage, private database: AngularFireDatabase, private authService: FirebaseAuthenticationService) {}
 
-    
-    createFolder(folderName: string) {
+    createFolder(folderName: string) 
+    {
         const folderReference = this.database.list("folders");
-
-        let folder = new Folder(folderName, this.authService.userId);
-
+        const uid = this.authService.getUserProperty(UserProperties.Uid)
+        let folder = new Folder(folderName, uid);
         folderReference.push(folder);
     }
 
     getUserFolders()
     {
-
-        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(this.authService.userId));
+        const uid = this.authService.getUserProperty(UserProperties.Uid)
+        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(uid));
         return folderListRef.snapshotChanges().pipe(
             map(changes => 
               changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
@@ -38,8 +38,8 @@ export class FirebaseFoldersService {
         );
     }
 
-    uploadFile(files: File[], folderKey: string) {
-
+    uploadFile(files: File[], folderKey: string) 
+    {
         [...files].forEach(file => {
 
             let fileName = Date.now() + '-' + file.name;
@@ -59,7 +59,6 @@ export class FirebaseFoldersService {
                     });
                 })
             ).subscribe();
-
         });
     }
 
@@ -79,9 +78,6 @@ export class FirebaseFoldersService {
             fileList.push(file);
 
             this.database.list("folders").update(folderKey, {files: fileList});
-        });
-
-        
-        
+        }); 
     }
 }
