@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
+import { FirebaseFoldersService } from 'src/app/@core/services/firebase-folders.service';
 import { FoldersService } from 'src/app/@core/services/folders.service';
+import { FileInfo } from 'src/app/@shared/models/file';
 import { Folder } from 'src/app/@shared/models/folder';
 
 @Component({
@@ -10,23 +13,23 @@ import { Folder } from 'src/app/@shared/models/folder';
 })
 export class FolderListComponent implements OnInit {
 
-  constructor(private folderService: FoldersService, private route: ActivatedRoute, private router: Router) { }
-  folders: Folder[] = [];
+  constructor(private firebaseAuthService: FirebaseAuthenticationService, private folderService: FoldersService, private route: ActivatedRoute, private router: Router, private firebaseFolderService: FirebaseFoldersService) { }
+  folders: any[] = [];
   
   showDetails: boolean = false;
   selectedFolder?: Folder;
   ngOnInit(): void {
-    this.loadFolders();
-    
+      this.loadFolders();
   }
 
 
-  loadFolders()
+  loadFolders() : void
   {
-    this.folderService.fetchAllFolders().subscribe(folders =>{
-      this.folders = folders;
+    this.firebaseFolderService.getUserFolders().subscribe(folderList =>{
+        this.folders = folderList;
     });
   }
+
   selectFolder(folder: Folder)
   {
     
@@ -36,27 +39,36 @@ export class FolderListComponent implements OnInit {
   showFolderDetails()
   {
       this.showDetails = true;
-      this.router.navigate(['/folders', this.selectedFolder?._id]);
+      // this.router.navigate(['/folders', this.selectedFolder?._id]);
 
   }
   addFolder()
   {
       let folderName = prompt("Informe o nome da pasta");
-      this.folderService.createFolder(folderName).subscribe();
-      this.loadFolders()
+      
+      if(folderName == null || folderName == undefined || folderName?.trim() == "")
+      {
+          alert("Necessário informar um nome!");
+          return;
+      }
+
+      this.firebaseFolderService.createFolder(folderName);
   }
 
   
   addFiles(event: any)
   {
+
       if(this.selectedFolder == null || this.selectedFolder == undefined) 
       {
         alert("Necessário selecionar uma pasta antes de adicionar arquivos")
         return;
       }
-      let fileList = event.target.files;
-      this.folderService.uploadFilesToFolder(this.selectedFolder._id, fileList).subscribe();
 
+      let fileList: File[] = [];
+
+      fileList = event.target.files;
+      this.firebaseFolderService.uploadFile(fileList, this.selectedFolder.key);
+  
   }
-
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ObjectId } from 'mongodb';
-import { File } from 'src/app/@shared/models/file';
+import { FileInfo } from 'src/app/@shared/models/file';
 import { FoldersService } from 'src/app/@core/services/folders.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class FolderDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private folderService: FoldersService) { }
   folderId: ObjectId | null = null;
-  folderFiles: File[] = [];
+  folderFiles: FileInfo[] = [];
   filePath = 'http://localhost:8000/downloads/';
   
   ngOnInit(): void {

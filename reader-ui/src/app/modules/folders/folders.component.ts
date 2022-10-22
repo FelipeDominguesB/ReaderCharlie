@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 
 @Component({
   selector: 'app-folders',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FoldersComponent implements OnInit {
 
-  constructor() { }
+  constructor(private firebaseAuthService: FirebaseAuthenticationService) { }
 
   ngOnInit(): void {
+    
   }
 
 }

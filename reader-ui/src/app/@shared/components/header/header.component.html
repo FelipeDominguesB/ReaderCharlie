@@ -1,8 +1,11 @@
 <mat-toolbar color="primary">
     <span>READER CHARLIE</span>
     <span style="flex: 1 1 auto;"></span>
-    <span>Felipe Domingues Bonfim</span>
-    <button mat-icon-button>
-        <mat-icon>account_circle</mat-icon>
-    </button>
+    <div *ngIf="authService.isAuthenticated()">
+        <span>Felipe Domingues Bonfim</span>
+        <button mat-icon-button>
+            <mat-icon>account_circle</mat-icon>
+        </button>
+
+    </div>
 </mat-toolbar>

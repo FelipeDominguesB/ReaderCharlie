@@ -21,7 +21,7 @@
           <mat-divider [inset]="true"></mat-divider>
 
         </mat-card-content>
-        <mat-label>Não possuí acesso? Cadastre-se!</mat-label>
+        <mat-label>Não possui acesso? <a routerLink="sign-up">Cadastre-se!</a></mat-label>
         <div class="buttons-div">
           <button mat-raised-button color="primary" type="submit" [disabled]="f.password.invalid || f.email.invalid">Login</button>
           <button mat-raised-button color="primary">Esqueci minha senha</button>

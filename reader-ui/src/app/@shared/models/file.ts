@@ -1,4 +1,7 @@
-export interface File{
-    fileName: string,
-    fileType: string
+export class FileInfo{
+
+    fileDownloadUrl: string;
+    fileName: string;
+
+    
 }

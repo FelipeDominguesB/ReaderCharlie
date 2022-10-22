@@ -7,6 +7,7 @@ import { RegistryFormComponent } from './registry-form/registry-form.component';
 
 const routes: Routes = [
   { path: '', component: LoginFormComponent},
+  { path: 'sign-in', component: LoginFormComponent},
   { path: 'sign-up', component: RegistryFormComponent}
 ];
 

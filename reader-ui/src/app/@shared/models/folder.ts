@@ -1,9 +1,16 @@
-import {ObjectId} from 'mongodb';
-import { File } from './file';
+import { FileInfo } from './file';
 
-export interface Folder{
-    _id: ObjectId,
-    name: string,
-    size: number,
-    files: Array<File>
+export class Folder{
+
+    constructor(name: string, userId: string)
+    {
+        this.name = name;
+        this.userId = userId;
+        this.files = [];
+    }
+
+    name: string;
+    userId: string;
+    key: string;
+    files: Array<FileInfo>;
 }

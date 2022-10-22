@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService: FirebaseAuthenticationService) { }
 
   ngOnInit(): void {
+    
   }
 
 }
