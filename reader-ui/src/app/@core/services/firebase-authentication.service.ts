@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { sign } from 'crypto';
+import { resolve } from 'dns';
 
 import { Observable, observable, from } from 'rxjs';
 import { FirebaseToken } from 'src/app/@shared/models/FirebaseToken';
@@ -17,90 +18,97 @@ export class FirebaseAuthenticationService {
   constructor(private angularFireAuth: AngularFireAuth, private router: Router) { }
 
 
-  login(email: string, password: string)
-  {
-    return new Promise((resolve, reject) =>{
+  login(email: string, password: string) {
       this.angularFireAuth.signInWithEmailAndPassword(email, password)
-      .then(()=> {
-          this.saveInformationOnStorage();
-      })
-      .then(() =>{
-          resolve(true);
-      })
-      .catch(err => reject(err));
-    })
-    
+        .then(() => {
+      
+          return this.saveInformationOnStorage();
+        })
+        .then(() => {
 
-    
-  }
+          setTimeout(() =>{
+            this.router.navigate(['/folders']);
+          }, 100);
 
-
-  saveInformationOnStorage()
-  {
-      this.angularFireAuth.idTokenResult.subscribe(tokenInfo =>{
-          let token: FirebaseToken = {
-            accessToken: tokenInfo!.token,
-            expiration: new Date(Date.parse(tokenInfo!.expirationTime))
-          }
           
-          localStorage.setItem('token', JSON.stringify(token));
-      }, err =>{
-          console.log("Erro ao salvar informação")
-      });
-      
-      this.angularFireAuth.user.subscribe(loginInfo =>{
-          let user: User = {
-            email: loginInfo!.email!,
-            userName: loginInfo!.displayName!,
-            uid: loginInfo!.uid,
-          };
 
-          localStorage.setItem('user', JSON.stringify(user));
-      }, err =>{
-        console.log("Erro ao salvar informação")
-      });
-      
-      
-    
+        })
+        .catch(err => { console.log(err)});
   }
 
-  isAuthenticated() : boolean
-  {
-    
-      let token = new FirebaseToken();
-      token = JSON.parse(localStorage.getItem('token') || '{}');
 
-      if(!token.accessToken || !token.expiration)
-      {
-        localStorage.clear();
-        return false;
-      }
+  saveInformationOnStorage() {
+    return new Promise((resolve, reject) => {
+      this.angularFireAuth.idTokenResult.subscribe(tokenInfo => {
+        let token: FirebaseToken = {
+          accessToken: tokenInfo!.token,
+          expiration: new Date(Date.parse(tokenInfo!.expirationTime))
+        }
+
+        localStorage.setItem('token', JSON.stringify(token));
+      }, err => {
+        reject("Erro ao salvar informação")
+      });
+
+      this.angularFireAuth.user.subscribe(loginInfo => {
+        let user: User = {
+          email: loginInfo!.email!,
+          userName: loginInfo!.displayName!,
+          uid: loginInfo!.uid,
+        };
+
+        localStorage.setItem('user', JSON.stringify(user));
+      }, err => {
+        reject("Erro ao salvar informação")
+      });
+
+      console.log("finalizei o save: " + Date.now())
       
-      if(token.expiration < new Date(Date.now()))
-      {
-        localStorage.clear();
-        return false;
-      }
+      setTimeout(() =>{
+        resolve(true);
+      }, 100)
+      
 
-      return true;
+    })
+
+
+
+
   }
 
-  
-  get userId() { 
+  isAuthenticated(): boolean {
+
+    let token = new FirebaseToken();
+    token = JSON.parse(localStorage.getItem('token') || '{}');
+
+    if (!token.accessToken || !token.expiration) {
+      localStorage.clear();
+      return false;
+    }
+
+    if (token.expiration < new Date(Date.now())) {
+      localStorage.clear();
+      return false;
+    }
+
+    return true;
+  }
+
+
+  get userId() {
     let user = JSON.parse(localStorage.getItem('user') || '{}');
 
-    if(!user.uid){
+    if (!user.uid) {
       this.signOut();
     }
 
     return user.uid;
   }
 
-  signOut()
-  {
-      this.angularFireAuth.signOut().then(() =>{
-          localStorage.clear();
-          this.router.navigate(['login']);
-      });
+  signOut() {
+    this.angularFireAuth.signOut().then(() => {
+      localStorage.clear();
+      this.router.navigate(['login']);
+    });
   }
 }

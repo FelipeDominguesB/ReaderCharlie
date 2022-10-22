@@ -1,11 +1,16 @@
 <mat-toolbar color="primary">
     <span>READER CHARLIE</span>
     <span style="flex: 1 1 auto;"></span>
-    <div *ngIf="authService.isAuthenticated()">
-        <span>Felipe Domingues Bonfim</span>
-        <button mat-icon-button>
+    <div class="account_icon" *ngIf="authService.isAuthenticated()">
+        <span >Felipe Domingues Bonfim</span>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu">
             <mat-icon>account_circle</mat-icon>
         </button>
+
+        <mat-menu #profileMenu="matMenu" >
+            <button mat-menu-item>Minha conta</button>
+            <button mat-menu-item (click)="this.authService.signOut();">Sair</button>
+        </mat-menu>
 
     </div>
 </mat-toolbar>

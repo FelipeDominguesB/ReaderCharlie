@@ -1,0 +1,11 @@
+.photos-div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.photos-div img, .photos-div video{
+    width: 40%;
+}
+

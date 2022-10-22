@@ -12,10 +12,14 @@ export class AuthGuard implements CanActivate {
 
   canActivate() : boolean
   {
+      console.log("Guard");
       let canActivate = this.firebaseAuthenticationService.isAuthenticated();
 
       if(!canActivate)
+      {
         this.router.navigate(['login'])
+        console.log("Não pode ativar")
+      }
 
       return canActivate;
   }

@@ -1,5 +1,5 @@
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="loginForm" >
     <mat-card class="mat-elevation-z8">
         <mat-card-header>
             <mat-card-title>Entrar</mat-card-title>
@@ -23,7 +23,7 @@
         </mat-card-content>
         <mat-label>Não possui acesso? <a routerLink="sign-up">Cadastre-se!</a></mat-label>
         <div class="buttons-div">
-          <button mat-raised-button color="primary" type="submit" [disabled]="f.password.invalid || f.email.invalid">Login</button>
+          <button mat-raised-button color="primary" (click)="this.firebaseAuthentication.login(f.email.value, f.password.value)" [disabled]="f.password.invalid || f.email.invalid">Login</button>
           <button mat-raised-button color="primary">Esqueci minha senha</button>
 
         </div>

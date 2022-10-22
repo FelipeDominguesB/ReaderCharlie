@@ -11,7 +11,7 @@ import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-a
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private firebaseAuthentication: FirebaseAuthenticationService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, public firebaseAuthentication: FirebaseAuthenticationService) {
 
     this.loginForm = this.formBuilder.group({
         email: ['', [Validators.required, Validators.email] ],
@@ -42,15 +42,6 @@ export class LoginFormComponent implements OnInit {
   get email() { return this.loginForm.controls['email'].value };
   get password() { return this.loginForm.controls['password'].value };
   
-  public onSubmit()
-  {
 
-      this.firebaseAuthentication.login(this.email, this.password).then(authenticated =>{
-          this.router.navigate(['/folders'])
-      }).catch(err =>{
-        console.log("deu erro: "  + err);
-      });
-      
-  }
 
 }

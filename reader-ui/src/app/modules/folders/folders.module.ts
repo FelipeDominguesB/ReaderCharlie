@@ -5,7 +5,7 @@ import { FoldersRoutingModule } from './folders-routing.module';
 import { FolderListComponent } from './folder-list/folder-list.component';
 import { FolderDetailsComponent } from './folder-details/folder-details.component';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     FoldersRoutingModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule
   ]
 })
 export class FoldersModule { }

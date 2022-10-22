@@ -4,13 +4,18 @@
     <input type="file" multiple="multiple" accept=".png, .jpg, .jpeg, .gif, .mp4" (change)="addFiles($event)"  #fileUpload>
     
     <div class="folder-collection">
-        <div class="folder" *ngFor="let folder of folders" (click)="selectFolder(folder)" (dblclick)="showFolderDetails()" [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
+        <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)" [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
             <img src="../../assets/images/folder.png">
             <label>{{ folder.name }}</label>
+
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item routerLink="/folders/{{folder.key}}">Abrir</button>
+                <button mat-menu-item>Excluir</button>
+            </mat-menu>
         </div>
     
+        
     </div>
     
-  
-    <a routerLink="/folders"></a>
+
 </section>

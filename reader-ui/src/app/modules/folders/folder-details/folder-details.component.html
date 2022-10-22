@@ -1,5 +1,5 @@
 <div class="photos-div">
     <ng-container *ngFor="let file of folderFiles">
-        <img src='{{filePath + file.fileName}}' />
+        <img src='{{file.fileDownloadUrl}}' />
     </ng-container>
 </div>

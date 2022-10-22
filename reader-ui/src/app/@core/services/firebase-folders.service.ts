@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireDatabaseModule, AngularFireList } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -16,27 +16,21 @@ export class FirebaseFoldersService {
 
     folderRef: AngularFireList<Folder>
     userId: string;
-    constructor(private storage: AngularFireStorage, private database: AngularFireDatabase, private authService: FirebaseAuthenticationService) {
-        this.userId = authService.userId;
-    }
+    constructor(private storage: AngularFireStorage, private database: AngularFireDatabase, private authService: FirebaseAuthenticationService) {}
 
-
+    
     createFolder(folderName: string) {
         const folderReference = this.database.list("folders");
 
-        let folder = new Folder(folderName, this.userId);
+        let folder = new Folder(folderName, this.authService.userId);
 
         folderReference.push(folder);
-    }
-
-    getFolders() {
-       
     }
 
     getUserFolders()
     {
 
-        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(this.userId));
+        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(this.authService.userId));
         return folderListRef.snapshotChanges().pipe(
             map(changes => 
               changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
@@ -69,6 +63,10 @@ export class FirebaseFoldersService {
         });
     }
 
+    getFolderByKey(folderKey: string)
+    {
+        return this.database.list<Folder>("folders", ref => ref.orderByKey().equalTo(folderKey).limitToFirst(1)).valueChanges();
+    }
 
     addFileToFolder(file: FileInfo, folderKey: string)
     {   
