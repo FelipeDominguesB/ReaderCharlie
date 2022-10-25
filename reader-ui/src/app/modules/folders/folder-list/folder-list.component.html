@@ -5,7 +5,8 @@
     
     <div class="folder-collection">
         <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)" [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
-            <img src="../../assets/images/folder.png">
+            <!-- <img src="../../assets/images/folder.png"> -->
+            <mat-icon>folder</mat-icon>
             <label>{{ folder.name }}</label>
 
             <mat-menu #menu="matMenu" xPosition="before">

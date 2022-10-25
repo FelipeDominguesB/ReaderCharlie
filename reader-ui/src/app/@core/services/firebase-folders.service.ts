@@ -22,14 +22,15 @@ export class FirebaseFoldersService {
     createFolder(folderName: string) 
     {
         const folderReference = this.database.list("folders");
-        const uid = this.authService.getUserProperty(UserProperties.Uid)
+        const uid = this.authService.userId;
         let folder = new Folder(folderName, uid);
         folderReference.push(folder);
     }
 
     getUserFolders()
     {
-        const uid = this.authService.getUserProperty(UserProperties.Uid)
+        const uid = this.authService.userId;
+        console.log(uid);
         const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(uid));
         return folderListRef.snapshotChanges().pipe(
             map(changes => 
