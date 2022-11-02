@@ -1,0 +1,20 @@
+<mat-card class="mat-elevation-z10">
+    <mat-card-title>Perfil</mat-card-title>
+
+    <mat-card-content>
+
+        <div class="profile-info">
+            <img src="https://avatarfiles.alphacoders.com/310/310621.jpg">
+            <div class="mat-card-info">
+                <p>Nome: {{this.user.displayName}}</p>
+                <p>Email: {{this.user.email}}</p>
+                <p>Data de criação: {{ this.user.createdAt | date: 'dd/MM/yyyy' }}</p>
+            </div>
+        </div>
+        <div class="buttons-div">
+            <button mat-raised-button color="primary" disabled="true">Editar informações</button>
+            <button mat-raised-button color="warn">Excluir conta</button>
+        </div>
+    </mat-card-content>
+
+</mat-card>

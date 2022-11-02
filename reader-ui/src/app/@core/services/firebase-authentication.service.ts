@@ -4,12 +4,11 @@ import { calcPossibleSecurityContexts } from '@angular/compiler/src/template_par
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { sign } from 'crypto';
-import { resolve } from 'dns';
 
-import { Observable, observable, from } from 'rxjs';
+
+import { Observable, observable, from, of } from 'rxjs';
 import { FirebaseToken } from 'src/app/@shared/models/FirebaseToken';
-import { User, UserProperties } from 'src/app/@shared/models/User';
+import { User, UserProperties, UserRegistryObject } from 'src/app/@shared/models/User';
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +36,29 @@ export class FirebaseAuthenticationService {
 
         })
         .catch(err => { console.log(err)});
+  }
+
+  signUp(user: UserRegistryObject)
+  {
+    return new Promise((resolve, reject) =>{
+      this.angularFireAuth
+      .createUserWithEmailAndPassword(user.email, user.password)
+      .then(res =>{
+  
+        return res.user?.updateProfile({
+          displayName: user.displayName,
+          photoURL: user.photoURL
+        })
+      })
+      .then((res) =>{
+          resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      })
+    })
+    
+
   }
 
 
@@ -102,6 +124,22 @@ export class FirebaseAuthenticationService {
 
     return userProperty;
     
+  }
+
+  get userInfo() : Observable<User>
+  {
+    let user: User = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!user) {
+      this.signOut();
+    }
+
+    return of(user);
+  }
+
+  get userName() {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.displayName;
   }
 
   get userId() {

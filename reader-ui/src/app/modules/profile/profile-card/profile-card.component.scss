@@ -1,0 +1,55 @@
+:host{
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+}
+mat-card{
+
+    min-width: 400px;
+    max-width: 60%;
+    mat-card-title{
+        text-align: center;
+    }
+    mat-card-content{
+        div.profile-info{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+    
+            * {
+                margin: 0 10px 0 10px;
+            }
+            
+            img{
+                width: 150px;
+                border-radius: 50%;
+            }
+    
+            .mat-card-info{
+                display: flex;
+                flex-direction: column;
+    
+                p{
+                    font-size: 1.2em;
+                    margin: 5px 0 5px 0;
+                }
+            }
+        }
+
+        div.buttons-div{
+    
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0 0 0 ;
+        
+            button{
+                min-width: 150px;
+                margin: 0 5px 0 5px;
+            }
+        }
+        
+        
+    }
+    
+}

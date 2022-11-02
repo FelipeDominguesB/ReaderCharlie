@@ -4,8 +4,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FileInfo } from 'src/app/@shared/models/file';
 import { Folder } from 'src/app/@shared/models/folder';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { Observable, of, pipe} from 'rxjs';
+import { finalize, map, first, take } from 'rxjs/operators';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { FolderDetailsComponent } from 'src/app/modules/folders/folder-details/folder-details.component';
 import { ThrowStmt } from '@angular/compiler';
@@ -27,10 +27,17 @@ export class FirebaseFoldersService {
         folderReference.push(folder);
     }
 
+    
+    addFileToFolder(file: FileInfo, folderKey: string)
+    {   
+        const folderRef = this.database.list<FileInfo>("folders/" + folderKey + "/files");
+        folderRef.push(file);
+    }
+
+
     getUserFolders()
     {
         const uid = this.authService.userId;
-        console.log(uid);
         const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(uid));
         return folderListRef.snapshotChanges().pipe(
             map(changes => 
@@ -39,28 +46,68 @@ export class FirebaseFoldersService {
         );
     }
 
-    uploadFile(files: File[], folderKey: string) 
+    getFolderFiles(folderKey: string)
+    {
+
+        let folderFiles: FileInfo[] = [];
+        const folderFilesObject = this.database.list<FileInfo>(`folders/${folderKey}/files`);
+
+        return folderFilesObject.valueChanges();
+
+   
+    }
+    deleteFolder(folder: Folder)
+    {
+        const folderObject = this.database.list<Folder>("folders");
+        
+        if(folder.files)
+        {
+            Object.values(folder.files).forEach(file =>{
+                this.removeFile(folder.key, file.fileName);       
+            })
+        }
+        
+        folderObject.remove(folder.key);
+
+    }
+
+    removeFile(folderKey, fileName)
+    {
+        let storageRef = this.storage.storage.ref(`/${folderKey}/${fileName}`);
+        storageRef.delete();
+    }
+    
+    uploadFiles(files: File[], folderKey: string) 
     {
         [...files].forEach(file => {
-
-            let fileName = Date.now() + '-' + file.name;
-            let folderComposeName = `/${folderKey}/`
-            let path = folderComposeName + fileName;
-
-            const storageRef = this.storage.ref(path);
-            const uploadTask = this.storage.upload(path, file);
-
-            uploadTask.snapshotChanges().pipe(
-                finalize(() => {
-                    storageRef.getDownloadURL().subscribe(downloadURL => {
-                        let fileInfo = new FileInfo();
-                        fileInfo.fileDownloadUrl = downloadURL;
-                        fileInfo.fileName = fileName;
-                        this.addFileToFolder(fileInfo, folderKey);
-                    });
-                })
-            ).subscribe();
+            this.pushFileToStorage(file, folderKey).subscribe(res =>{
+                console.log(file.name + ' - ' + res);
+            });
         });
+    }
+
+    pushFileToStorage(file: File, folderKey: string){
+        let fileName = Date.now() + '-' + file.name;
+        let folderComposeName = `/${folderKey}/`
+        let path = folderComposeName + fileName;
+        const storageRef = this.storage.ref(path);
+        const uploadTask = this.storage.upload(path, file);
+      
+        
+        uploadTask.snapshotChanges().pipe(
+            finalize(() => 
+            {
+                storageRef.getDownloadURL().subscribe(downloadURL => 
+                {
+                    let fileInfo = new FileInfo();
+                    fileInfo.fileDownloadUrl = downloadURL;
+                    fileInfo.fileName = fileName;
+                    this.addFileToFolder(fileInfo, folderKey);
+                })
+            })
+        ).subscribe();
+      
+        return uploadTask.percentageChanges();
     }
 
     getFolderByKey(folderKey: string)
@@ -68,17 +115,4 @@ export class FirebaseFoldersService {
         return this.database.list<Folder>("folders", ref => ref.orderByKey().equalTo(folderKey).limitToFirst(1)).valueChanges();
     }
 
-    addFileToFolder(file: FileInfo, folderKey: string)
-    {   
-        let fileList: FileInfo[] = [];
-        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByKey().equalTo(folderKey));
-
-        folderListRef.valueChanges().subscribe(res =>{
-            if(!res[0].files) res[0].files = [];
-            fileList = res[0].files;
-            fileList.push(file);
-
-            this.database.list("folders").update(folderKey, {files: fileList});
-        }); 
-    }
 }

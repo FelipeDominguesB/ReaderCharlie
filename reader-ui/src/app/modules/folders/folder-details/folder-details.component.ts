@@ -17,10 +17,10 @@ export class FolderDetailsComponent implements OnInit {
     folderFiles: FileInfo[] = [];
     constructor(private route: ActivatedRoute, private folderServices: FirebaseFoldersService) {
         this.route.params.subscribe(params => {
-            this.folderServices.getFolderByKey(params['id']).subscribe(folderList => {
-                this.folderFiles = folderList[0].files;
-                console.log(folderList);
+            this.folderServices.getFolderFiles(params['id']).subscribe(res =>{
+                this.folderFiles = res
             });
+
         });
     }
 

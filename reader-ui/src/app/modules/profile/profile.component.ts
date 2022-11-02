@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
-import { User } from 'src/app/@shared/models/User';
 
 @Component({
   selector: 'app-profile',
@@ -9,11 +7,12 @@ import { User } from 'src/app/@shared/models/User';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: FirebaseAuthenticationService) { }
-  
+  constructor() { 
+    console.log("Iniciei")
+  }
 
   ngOnInit(): void {
-
+   
   }
 
 }

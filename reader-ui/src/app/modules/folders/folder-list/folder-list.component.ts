@@ -29,10 +29,11 @@ export class FolderListComponent implements OnInit {
     });
   }
 
-  selectFolder(folder: Folder)
+  selectFolder(folder: Folder | undefined)
   {
-    
-      this.selectedFolder = folder;
+
+     this.selectedFolder = folder;
+      
   }
 
   showFolderDetails()
@@ -54,7 +55,10 @@ export class FolderListComponent implements OnInit {
       this.firebaseFolderService.createFolder(folderName);
   }
 
-  
+  deleteFolder(folder: Folder)
+  {
+      this.firebaseFolderService.deleteFolder(folder)
+  }
   addFiles(event: any)
   {
 
@@ -67,7 +71,7 @@ export class FolderListComponent implements OnInit {
       let fileList: File[] = [];
 
       fileList = event.target.files;
-      this.firebaseFolderService.uploadFile(fileList, this.selectedFolder.key);
+      this.firebaseFolderService.uploadFiles(fileList, this.selectedFolder.key);
   
   }
 }

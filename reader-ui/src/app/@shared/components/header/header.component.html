@@ -1,14 +1,22 @@
 <mat-toolbar color="primary">
-    <span>READER CHARLIE</span>
+
+    
+    <div *ngIf="authService.isAuthenticated(); else elseBlock">
+        <span class="headerLink" [routerLink]="['/folders']">Inicio </span>
+        <span class="headerLink">Pastas públicas</span>
+
+    </div>
+
+    <ng-template #elseBlock><span style="font-size: 1.5em;">MyReaderProject</span></ng-template>
     <span style="flex: 1 1 auto;"></span>
     <div class="account_icon" *ngIf="authService.isAuthenticated()">
-        <span *ngIf="this.authService.userData as user">{{(user.displayName) ? user.displayName : 'User'}}</span>
+        <span>{{(this.authService.userName) ? this.authService.userName : 'User'}}</span>
         <button mat-icon-button [matMenuTriggerFor]="profileMenu">
             <mat-icon>account_circle</mat-icon>
         </button>
 
         <mat-menu #profileMenu="matMenu" >
-            <button mat-menu-item>Minha conta</button>
+            <button mat-menu-item [routerLink]="['/profile']">Minha conta</button>
             <button mat-menu-item (click)="this.authService.signOut();">Sair</button>
         </mat-menu>
 
