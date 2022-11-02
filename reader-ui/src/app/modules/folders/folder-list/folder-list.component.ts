@@ -72,6 +72,7 @@ export class FolderListComponent implements OnInit {
 
       fileList = event.target.files;
       this.firebaseFolderService.uploadFiles(fileList, this.selectedFolder.key);
+      this.selectedFolder = undefined
   
   }
 }

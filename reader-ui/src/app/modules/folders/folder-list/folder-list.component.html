@@ -6,7 +6,7 @@
             <mat-icon>note_add</mat-icon>
             <label>Criar pasta</label>
         </div>
-        <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)" (menuClosed)="selectFolder(undefined)" [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
+        <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)"  [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
             <mat-icon>folder</mat-icon>
             <label>{{ folder.name }}</label>
             <mat-menu #menu="matMenu" xPosition="before">
