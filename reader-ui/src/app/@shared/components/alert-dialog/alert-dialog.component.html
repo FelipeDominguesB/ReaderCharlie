@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+    <p>{{data.message}}</p>
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="data.btn2Text" mat-button (click)="true" color="warn">Ok</button>
+  <button mat-flat-button (click)="this.closeDialog()" color="primary">{{data.btn1Text}}</button>
+</div>

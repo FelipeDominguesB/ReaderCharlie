@@ -6,15 +6,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button'
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { MatDialogModule} from '@angular/material/dialog';
 @NgModule({
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    AlertDialogComponent
   ],
   imports: [
     CommonModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule, 
     MatMenuModule,
     RouterModule
   ],

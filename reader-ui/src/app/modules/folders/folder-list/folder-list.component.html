@@ -3,7 +3,7 @@
     <div class="folder-collection">
 
         <div class="folder" (click)="addFolder()" mat-button>
-            <mat-icon>note_add</mat-icon>
+            <mat-icon>create_new_folder</mat-icon>
             <label>Criar pasta</label>
         </div>
         <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)"  [className]="folder == selectedFolder ? 'folder selected' : 'folder'">

@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider'
 import { MatButtonModule } from '@angular/material/button';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { RegistryFormComponent } from './registry-form/registry-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RegistryFormComponent } from './registry-form/registry-form.component';
     AuthRoutingModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
