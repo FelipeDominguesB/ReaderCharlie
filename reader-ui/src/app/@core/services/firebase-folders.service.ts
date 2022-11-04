@@ -50,7 +50,7 @@ export class FirebaseFoldersService {
     {
 
         let folderFiles: FileInfo[] = [];
-        const folderFilesObject = this.database.list<FileInfo>(`folders/${folderKey}/files`);
+        const folderFilesObject = this.database.list<FileInfo>(`folders/${folderKey}/files`, ref => ref.orderByChild('displayName'));
 
         return folderFilesObject.valueChanges();
 
@@ -101,7 +101,10 @@ export class FirebaseFoldersService {
                 {
                     let fileInfo = new FileInfo();
                     fileInfo.fileDownloadUrl = downloadURL;
+                    fileInfo.displayName = file.name;
                     fileInfo.fileName = fileName;
+                    fileInfo.fileType = file.type;
+                    
                     this.addFileToFolder(fileInfo, folderKey);
                 })
             })

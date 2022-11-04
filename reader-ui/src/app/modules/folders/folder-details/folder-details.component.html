@@ -1,5 +1,9 @@
 <div class="photos-div">
     <ng-container *ngFor="let file of folderFiles">
-        <img src='{{file.fileDownloadUrl}}' />
+        <img *ngIf="file.fileType.includes('image'); else elseVideo" src='{{file.fileDownloadUrl}}' />
+
+        <ng-template #elseVideo>
+            <video controls loop src='{{file.fileDownloadUrl}}'></video>
+        </ng-template>
     </ng-container>
 </div>
