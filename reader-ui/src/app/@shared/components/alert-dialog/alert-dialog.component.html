@@ -3,6 +3,6 @@
     <p>{{data.message}}</p>
 </div>
 <div mat-dialog-actions>
-  <button *ngIf="data.btn2Text" mat-button (click)="true" color="warn">Ok</button>
-  <button mat-flat-button (click)="this.closeDialog()" color="primary">{{data.btn1Text}}</button>
+  
+  <button *ngFor="let button of data.buttons" mat-flat-button mat-button (click)="this.closeDialog(button.returnValue)" color="{{button.color}}">{{button.text}} </button>
 </div>

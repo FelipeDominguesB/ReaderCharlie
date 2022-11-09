@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 import { AlertDialogComponent } from 'src/app/@shared/components/alert-dialog/alert-dialog.component';
 import { UserRegistryObject } from 'src/app/@shared/models/User';
-
+import {take} from 'rxjs/operators'
 @Component({
   selector: 'app-registry-form',
   templateUrl: './registry-form.component.html',
@@ -55,8 +55,8 @@ export class RegistryFormComponent implements OnInit {
       width: "400px",
       data: {title: title, message: message, btn1Text: btn1Text, btn2Text: btn2Text},
     });
-
-    return dialogRef.afterClosed();
+    
+    return dialogRef.afterClosed().pipe(take(1));
   }
   
 
