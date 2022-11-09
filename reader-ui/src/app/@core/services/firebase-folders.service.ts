@@ -49,9 +49,7 @@ export class FirebaseFoldersService {
     getFolderFiles(folderKey: string)
     {
 
-        let folderFiles: FileInfo[] = [];
         const folderFilesObject = this.database.list<FileInfo>(`folders/${folderKey}/files`, ref => ref.orderByChild('displayName'));
-
         return folderFilesObject.valueChanges();
 
    
