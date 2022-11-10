@@ -47,7 +47,7 @@ export class ProfileCardComponent implements OnInit {
       .openConfirmationDialog("Excluir conta", "Tem certeza que gostaria de excluir sua conta?", "Excluir", "Cancelar")
       .subscribe({
         next: (response: boolean) =>{
-            this.authService.deleteUser();
+            
               
         },
         error: () =>{

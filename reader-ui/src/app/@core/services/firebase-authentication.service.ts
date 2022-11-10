@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 
 
 import { Observable, observable, from, of } from 'rxjs';
-import { take, finalize } from 'rxjs/operators'
 import { FirebaseToken } from 'src/app/@shared/models/FirebaseToken';
 import { User, UserProperties, UserRegistryObject } from 'src/app/@shared/models/User';
 @Injectable({
@@ -156,30 +155,6 @@ export class FirebaseAuthenticationService {
     this.angularFireAuth.signOut().then(() => {
       localStorage.clear();
       this.router.navigate(['login']);
-    })
-    .catch(() =>{
-      localStorage.clear();
-      this.router.navigate(['login']);
     });
-  }
-
-  deleteUser()
-  {
-    this.angularFireAuth.user.pipe(take(1), finalize(() =>{ this.signOut()})).subscribe({
-      next: (user) =>{
-        user?.delete()
-        .then(() => {
-          console.log("Deletei")
-        })
-        .catch(() =>{
-          console.log("Não deletei")
-        })
-
-      },
-      error: () =>{
-        console.log("");
-      }
-    });
-
   }
 }
