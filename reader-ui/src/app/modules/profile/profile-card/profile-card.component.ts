@@ -6,6 +6,7 @@ import { User } from 'src/app/@shared/models/User';
 import {take} from 'rxjs/operators'
 import { chownSync } from 'fs';
 import { FirebaseFoldersService } from 'src/app/@core/services/firebase-folders.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-profile-card',
@@ -16,7 +17,8 @@ export class ProfileCardComponent implements OnInit {
 
   constructor(private authService: FirebaseAuthenticationService, 
     private dialog: MatDialog,
-    private folderService: FirebaseFoldersService) {  }
+    private folderService: FirebaseFoldersService,
+    private angularFireAuth: AngularFireAuth) {  }
 
   user: User;
   ngOnInit(): void {
@@ -47,7 +49,18 @@ export class ProfileCardComponent implements OnInit {
       .openConfirmationDialog("Excluir conta", "Tem certeza que gostaria de excluir sua conta?", "Excluir", "Cancelar")
       .subscribe({
         next: (response: boolean) =>{
-            
+          if(response)
+          {
+            this.angularFireAuth.user.subscribe(userData =>{
+                if(userData)
+                {
+                  console.log(userData?.uid)
+                  this.folderService.deleteAllFoldersFromUser();
+                  //userData?.delete()
+                }
+            })
+
+          }
               
         },
         error: () =>{

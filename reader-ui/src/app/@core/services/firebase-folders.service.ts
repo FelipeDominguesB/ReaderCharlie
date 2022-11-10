@@ -57,9 +57,7 @@ export class FirebaseFoldersService {
    
     }
     deleteFolder(folder: Folder)
-    {
-        const folderObject = this.database.list<Folder>("folders");
-        
+    {        
         if(folder.files)
         {
             Object.values(folder.files).forEach(file =>{
@@ -67,9 +65,24 @@ export class FirebaseFoldersService {
             })
         }
         
-        folderObject.remove(folder.key);
+        this.database.object(`folders/${folder.key}`).remove();
 
     }
+
+    deleteAllFoldersFromUser()
+    {
+        this.getUserFolders().pipe(take(1)).subscribe(res => {
+            res.forEach(folderResponse =>{
+                console.log(folderResponse);
+                let folder = new Folder(folderResponse.name!, folderResponse.userId!)
+                folder.key = folderResponse.key!;
+                folder.files = folderResponse.files ? folderResponse.files : [];
+                this.deleteFolder(folder);
+            })
+        })
+
+    }
+
 
     removeFile(folderKey, fileName)
     {
