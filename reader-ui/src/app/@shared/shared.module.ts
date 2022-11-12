@@ -8,10 +8,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { MatDialogModule} from '@angular/material/dialog';
+import { ConfirmPasswordDialogComponent } from './components/confirm-password-dialog/confirm-password-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     HeaderComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ConfirmPasswordDialogComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +24,11 @@ import { MatDialogModule} from '@angular/material/dialog';
     MatIconModule,
     MatButtonModule,
     MatDialogModule, 
+    MatInputModule,
+    FormsModule,
     MatMenuModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
     RouterModule
   ],
   exports: [

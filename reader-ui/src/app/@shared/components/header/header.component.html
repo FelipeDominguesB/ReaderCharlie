@@ -10,7 +10,7 @@
     <ng-template #elseBlock><span style="font-size: 1.5em;">MyReaderProject</span></ng-template>
     <span style="flex: 1 1 auto;"></span>
     <div class="account_icon" *ngIf="authService.isAuthenticated()">
-        <span>{{(this.authService.userName) ? this.authService.userName : 'User'}}</span>
+        <span>{{ getUsername()}}</span>
         <button mat-icon-button [matMenuTriggerFor]="profileMenu">
             <mat-icon>account_circle</mat-icon>
         </button>

@@ -15,4 +15,15 @@ export class HeaderComponent implements OnInit {
     
   }
 
+  getUsername()
+  {
+    try{
+      return (this.authService.userName) ? this.authService.userName : 'User'
+
+    }
+    catch{
+      return 'User';
+    }
+  }
+
 }

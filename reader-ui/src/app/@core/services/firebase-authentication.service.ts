@@ -28,7 +28,7 @@ export class FirebaseAuthenticationService {
         .then(() => {
 
           setTimeout(() =>{
-            console.log("Entrei no navigate")
+
             this.router.navigate(['/folders']);
           }, 100);
 
@@ -64,37 +64,42 @@ export class FirebaseAuthenticationService {
 
   saveInformationOnStorage() {
     return new Promise((resolve, reject) => {
-      this.angularFireAuth.idTokenResult.subscribe(tokenInfo => {
-        let token: FirebaseToken = {
-          accessToken: tokenInfo!.token,
-          expiration: new Date(Date.parse(tokenInfo!.expirationTime))
-        }
-
-        localStorage.setItem('token', JSON.stringify(token));
-      }, err => {
-        reject("Erro ao salvar informação")
-      });
-
-      this.angularFireAuth.user.subscribe(loginInfo => {
-        this.userData = loginInfo;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-      }, err => {
-        reject("Erro ao salvar informação")
-      });
-
-      console.log("finalizei o save: " + Date.now())
-      
-      setTimeout(() =>{
-        resolve(true);
-      }, 100)
-      
-
+      try{
+        this.angularFireAuth.idTokenResult.subscribe(tokenInfo => {
+          let token: FirebaseToken = {
+            accessToken: tokenInfo!.token,
+            expiration: new Date(Date.parse(tokenInfo!.expirationTime))
+          }
+  
+          localStorage.setItem('token', JSON.stringify(token));
+        }, err => {
+          reject("Erro ao salvar informação")
+        });
+  
+        this.angularFireAuth.user.subscribe(loginInfo => {
+          this.userData = loginInfo;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+        }, err => {
+          reject("Erro ao salvar informação")
+        });
+  
+        console.log("finalizei o save: " + Date.now())
+        
+        setTimeout(() =>{
+          resolve(true);
+        }, 100)
+        
+  
+      }catch{
+        reject(false);
+      }
     })
-
-
-
-
   }
+      
+
+
+
+  
 
   isAuthenticated(): boolean {
 

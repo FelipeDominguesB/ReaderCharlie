@@ -74,7 +74,6 @@ export class FirebaseFoldersService {
         return this.getUserFolders().pipe(take(1), tap(res => {
             res.forEach(folderResponse =>{
 
-                console.log("Excluindo folder")
                 let folder = new Folder(folderResponse.name!, folderResponse.userId!)
                 folder.key = folderResponse.key!;
                 folder.files = folderResponse.files ? folderResponse.files : [];

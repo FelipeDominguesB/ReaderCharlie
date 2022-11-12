@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
   <mat-form-field>
     <mat-label>E-mail</mat-label>
@@ -15,8 +15,8 @@
 
   <div class="buttons-div">
     <button mat-raised-button color="primary"
-    (click)="this.firebaseAuthentication.login(f.email.value, f.password.value)"
-    [disabled]="f.password.invalid || f.email.invalid">Login</button>
+    (click)="onSubmit()"
+    [disabled]="!loginForm.valid">Login</button>
     <button mat-raised-button color="primary">Esqueci minha senha</button>
   </div>
   <mat-label>Não possui acesso? <a routerLink="sign-up">Cadastre-se!</a></mat-label>

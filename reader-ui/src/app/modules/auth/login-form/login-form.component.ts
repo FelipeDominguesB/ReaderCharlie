@@ -24,7 +24,13 @@ export class LoginFormComponent implements OnInit {
     this.firebaseAuthentication.signOut();
   }
 
+  onSubmit()
+  {
+      this.firebaseAuthentication.login(this.f.email.value, this.f.password.value)
+  }
+
   public getEmailErrorMessage() {
+
 
     if (this.f.email.hasError('required')) {
       return 'E-mail não preenchido';

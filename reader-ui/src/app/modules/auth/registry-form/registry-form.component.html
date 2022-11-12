@@ -7,16 +7,25 @@
     <mat-form-field>
       <mat-label>E-mail</mat-label>
       <input matInput id="email" placeholder="teste@exemplo.com" name="email" autocomplete="email" formControlName='email' required>
-  
+      <mat-error *ngIf="f.email.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Senha</mat-label>
-      <input matInput id="password" formControlName='password' [type]="'password'" required>
-    </mat-form-field>
-  
+    <div formGroupName="passwords">
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput id="password" formControlName='password' [type]="'password'" required>
+        <mat-error *ngIf="f.email.invalid">{{getPasswordErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirme sua senha</mat-label>
+        <input matInput id="confirm_password" formControlName='confirm_password' [type]="'password'" required>
+        <mat-error *ngIf="passwordsGroup.hasError('invalid')">As senhas não correspondem</mat-error>
+      </mat-form-field>
+    </div>
+    
+
   
     <div class="buttons-div">
-        <button mat-raised-button color="primary" style="width: 80%;" (click)="this.createUser()">Criar conta</button>
+        <button mat-raised-button color="primary" style="width: 80%;" [disabled]="!registryForm.valid" (click)="this.createUser()">Criar conta</button>
     </div>
     <mat-label>Já possui uma conta? <a routerLink="sign-up">Faça login!</a></mat-label>
     

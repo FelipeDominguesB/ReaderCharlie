@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 import { AlertDialogComponent } from 'src/app/@shared/components/alert-dialog/alert-dialog.component';
@@ -19,21 +19,34 @@ export class RegistryFormComponent implements OnInit {
     this.registryForm = this.formBuilder.group({
         userName: ['', [Validators.required] ],
         email: ['', [Validators.required, Validators.email] ],
-        password: ['', [Validators.required]]
+        passwords: this.formBuilder.group ({
+          password: ['', [Validators.required, Validators.minLength(8)]],
+          confirm_password: ['', [Validators.required]],
+
+        }, { validators: this.confirmPasswords})
     });
    }
   get f() { return this.registryForm.controls; }
+  get passwordsGroup() { return this.registryForm['controls']['passwords']}
+  get passwordsGroupControls() { return this.registryForm['controls']['passwords']['controls']}
+
   ngOnInit(): void {
   }
 
+  confirmPasswords(control: AbstractControl) {
+    if(control.get('password')?.value !== control.get('confirm_password')?.value) 
+      return {invalid: true}
+    
+    return null;
+  }
   createUser()
   {
-    let user: UserRegistryObject = {email: this.f.email.value, displayName: this.f.userName.value, password: this.f.password.value };
+    let user: UserRegistryObject = {email: this.f.email.value, displayName: this.f.userName.value, password: this.passwordsGroupControls.password.value };
 
     this.firebaseAuthentication.signUp(user).then(res =>{
       this.openConfirmationDialog("Sucesso!", "Cadastro realizado com sucesso!", "Ok").subscribe({
         next: () =>{
-            this.firebaseAuthentication.login(this.f.email.value, this.f.password.value)
+            this.firebaseAuthentication.login(this.f.email.value, this.passwordsGroupControls.password.value)
         },
         error: () =>{}
       });
@@ -41,9 +54,7 @@ export class RegistryFormComponent implements OnInit {
     }).catch(err =>{
 
       let message = this.getErrorMessage(err.message);
-      this.openConfirmationDialog("Erro!", message, "Ok").subscribe(res =>{
-        console.log(res);
-      });
+      this.openConfirmationDialog("Erro!", message, "Ok").subscribe();
     });
  
   }
@@ -53,12 +64,35 @@ export class RegistryFormComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       width: "400px",
-      data: {title: title, message: message, btn1Text: btn1Text, btn2Text: btn2Text},
+      data: {title: title, message: message, buttons: [{text: btn1Text, color: 'primary', returnValue: true}]},
     });
     
     return dialogRef.afterClosed().pipe(take(1));
   }
   
+
+  public getEmailErrorMessage() {
+
+ 
+    if (this.f.email.hasError('required')) {
+      return 'E-mail não preenchido';
+    }else{
+      return 'E-mail inválido'
+    }
+  }
+
+  public getPasswordErrorMessage()
+  {
+    if(this.passwordsGroup['controls']['password'].hasError('invalid'))
+    {
+      return 'Senha não preenchida'
+    }
+    else{
+      return 'Senha tem um tamanho mínimo de 10 caractéres'
+    }
+  }
+
+
 
   getErrorMessage(firebaseErr:string ) : string
   {
