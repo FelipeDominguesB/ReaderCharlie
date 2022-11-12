@@ -5,7 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FileInfo } from 'src/app/@shared/models/file';
 import { Folder } from 'src/app/@shared/models/folder';
 import { Observable, of, pipe} from 'rxjs';
-import { finalize, map, first, take } from 'rxjs/operators';
+import { finalize, map, first, tap, take } from 'rxjs/operators';
 import { FirebaseAuthenticationService } from './firebase-authentication.service';
 import { FolderDetailsComponent } from 'src/app/modules/folders/folder-details/folder-details.component';
 import { ThrowStmt } from '@angular/compiler';
@@ -71,15 +71,16 @@ export class FirebaseFoldersService {
 
     deleteAllFoldersFromUser()
     {
-        this.getUserFolders().pipe(take(1)).subscribe(res => {
+        return this.getUserFolders().pipe(take(1), tap(res => {
             res.forEach(folderResponse =>{
-                console.log(folderResponse);
+
+                console.log("Excluindo folder")
                 let folder = new Folder(folderResponse.name!, folderResponse.userId!)
                 folder.key = folderResponse.key!;
                 folder.files = folderResponse.files ? folderResponse.files : [];
                 this.deleteFolder(folder);
             })
-        })
+        }))
 
     }
 
