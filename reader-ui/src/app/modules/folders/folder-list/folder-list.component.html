@@ -1,8 +1,8 @@
 <section>
-    <input type="file" multiple="multiple" accept=".png, .jpg, .jpeg, .gif, .mp4" (change)="addFiles($event)"  #fileUpload>
+    <input  type="file" multiple="multiple" accept=".png, .jpg, .jpeg, .gif, .mp4" (change)="addFiles($event)"  #fileUpload>
     <div class="folder-collection">
 
-        <div class="folder" (click)="addFolder()" mat-button>
+        <div *ngIf="!showPublicFolders" class="folder" (click)="addFolder()" mat-button>
             <mat-icon>create_new_folder</mat-icon>
             <label>Criar pasta</label>
         </div>
@@ -11,8 +11,8 @@
             <label>{{ folder.name }}</label>
             <mat-menu #menu="matMenu" xPosition="before">
                 <button mat-menu-item routerLink="/folders/{{folder.key}}">Abrir</button>
-                <button mat-menu-item (click)="fileUpload.click()">Adicionar arquivos</button>
-                <button mat-menu-item (click)="deleteFolder(folder)">Excluir</button>
+                <button mat-menu-item (click)="fileUpload.click()" *ngIf="!showPublicFolders">Adicionar arquivos</button>
+                <button mat-menu-item (click)="deleteFolder(folder)" *ngIf="!showPublicFolders">Excluir</button>
             </mat-menu>
         </div>
     

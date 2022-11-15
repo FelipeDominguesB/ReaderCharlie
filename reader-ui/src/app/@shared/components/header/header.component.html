@@ -3,7 +3,7 @@
     
     <div *ngIf="authService.isAuthenticated(); else elseBlock">
         <span class="headerLink" [routerLink]="['/folders']">Inicio </span>
-        <span class="headerLink">Pastas públicas</span>
+        <span class="headerLink" [routerLink]="['/folders/public']">Pastas públicas</span>
 
     </div>
 

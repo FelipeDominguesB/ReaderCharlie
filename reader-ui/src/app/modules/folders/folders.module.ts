@@ -7,11 +7,22 @@ import { FolderDetailsComponent } from './folder-details/folder-details.componen
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { AddFolderModalComponent } from './folder-list/components/add-folder-modal/add-folder-modal.component';
+import { FolderSpecificationModalComponent } from './folder-list/components/folder-specification-modal/folder-specification-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select'
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [
     FoldersComponent,
     FolderListComponent,
     FolderDetailsComponent,
+    AddFolderModalComponent,
+    FolderSpecificationModalComponent,
     
   ],
   imports: [
@@ -19,6 +30,14 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
     FoldersRoutingModule,
     MatButtonModule,
     MatMenuModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDialogModule,
+    MatCheckboxModule,
     MatIconModule
   ]
 })

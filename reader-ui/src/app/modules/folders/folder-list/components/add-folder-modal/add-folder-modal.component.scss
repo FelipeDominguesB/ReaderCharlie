@@ -1,0 +1,20 @@
+
+h1{
+    text-align: center;
+}
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-div{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 10px 0 15px 0;
+
+    button{
+        margin: 5px;
+    }
+    
+
+}

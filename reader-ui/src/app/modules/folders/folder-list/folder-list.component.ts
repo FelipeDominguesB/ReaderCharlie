@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 import { FirebaseFoldersService } from 'src/app/@core/services/firebase-folders.service';
 import { FileInfo } from 'src/app/@shared/models/file';
 import { Folder } from 'src/app/@shared/models/folder';
+import { AddFolderModalComponent } from './components/add-folder-modal/add-folder-modal.component';
 
 @Component({
   selector: 'app-folder-list',
@@ -12,21 +14,37 @@ import { Folder } from 'src/app/@shared/models/folder';
 })
 export class FolderListComponent implements OnInit {
 
-  constructor(private firebaseAuthService: FirebaseAuthenticationService, private route: ActivatedRoute, private router: Router, private firebaseFolderService: FirebaseFoldersService) { }
+  constructor(private firebaseAuthService: FirebaseAuthenticationService, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private firebaseFolderService: FirebaseFoldersService,
+    public dialog: MatDialog) { }
   folders: any[] = [];
-  
+
+  showPublicFolders: boolean = false;
+
   showDetails: boolean = false;
   selectedFolder?: Folder;
   ngOnInit(): void {
+      this.showPublicFolders = this.router.url.includes('public');
       this.loadFolders();
   }
 
 
   loadFolders() : void
   {
-    this.firebaseFolderService.getUserFolders().subscribe(folderList =>{
+    if(this.showPublicFolders)
+    {
+      this.firebaseFolderService.getAllPublicFolders().subscribe(folderList =>{
         this.folders = folderList;
-    });
+      });
+    }
+    else{
+      this.firebaseFolderService.getUserFolders().subscribe(folderList =>{
+        this.folders = folderList;
+      });
+    }
+    
   }
 
   selectFolder(folder: Folder | undefined)
@@ -44,15 +62,28 @@ export class FolderListComponent implements OnInit {
   }
   addFolder()
   {
-      let folderName = prompt("Informe o nome da pasta");
-      
-      if(folderName == null || folderName == undefined || folderName?.trim() == "")
-      {
-          alert("Necessário informar um nome!");
-          return;
-      }
 
-      this.firebaseFolderService.createFolder(folderName);
+      const dialogRef = this.dialog.open(AddFolderModalComponent, {
+        width: '600px'
+      })
+
+      dialogRef.afterClosed().subscribe({
+        next: (response) =>{
+          if(!!response)
+            this.firebaseFolderService.createFolder(response.folderName, response.isPublic, response.isAgeRestricted)
+        }
+      });
+
+
+      // let folderName = prompt("Informe o nome da pasta");
+      
+      // if(folderName == null || folderName == undefined || folderName?.trim() == "")
+      // {
+      //     alert("Necessário informar um nome!");
+      //     return;
+      // }
+
+      // this.firebaseFolderService.createFolder(folderName);
   }
 
   deleteFolder(folder: Folder)

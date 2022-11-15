@@ -7,6 +7,7 @@ import { FolderListComponent } from './folder-list/folder-list.component';
 
 const routes: Routes = [
   { path: '', component: FolderListComponent},
+  { path: 'public', component: FolderListComponent},
   { path: ':id', component: FolderDetailsComponent},
 
 ];

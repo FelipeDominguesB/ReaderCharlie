@@ -1,0 +1,27 @@
+<h1>Criar pasta</h1>
+
+<form [formGroup]="folderForm" >
+    <mat-form-field>
+        <mat-label>Nome da pasta</mat-label>
+        <input matInput formControlName='folderName' required>
+        <mat-error *ngIf="f.folderName.invalid">Necessário informar nome da pasta</mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+        <mat-label>Privacidade</mat-label>
+        <mat-select formControlName='isPublic' >
+            <mat-option value="false">Privado</mat-option>
+            <mat-option value="true">Público</mat-option>
+        </mat-select>
+        <mat-error *ngIf="f.isPublic.invalid">Necessário informar nível de privacidade</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox #myCheckbox color="primary" formControlName="ageRestricted" value="${myCheckbox.checked}">Conteúdo não recomendado para menores.</mat-checkbox>
+
+    
+</form>
+
+<div class="buttons-div">
+    <button mat-flat-button mat-button color="warn" (click)="cancelCreate()">Cancelar</button>
+    <button mat-flat-button mat-button color="primary" (click)="onSubmit()" [disabled]="!folderForm.valid">Criar</button>
+</div>

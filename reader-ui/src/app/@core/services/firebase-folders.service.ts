@@ -19,11 +19,11 @@ export class FirebaseFoldersService {
     userId: string;
     constructor(private storage: AngularFireStorage, private database: AngularFireDatabase, private authService: FirebaseAuthenticationService) {}
 
-    createFolder(folderName: string) 
+    createFolder(folderName: string, isPublic: boolean = false, isAgeRestricted: boolean = true) 
     {
         const folderReference = this.database.list("folders");
         const uid = this.authService.userId;
-        let folder = new Folder(folderName, uid);
+        let folder = new Folder(folderName, uid, isPublic, isAgeRestricted);
         folderReference.push(folder);
     }
 
@@ -39,6 +39,16 @@ export class FirebaseFoldersService {
     {
         const uid = this.authService.userId;
         const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('userId').equalTo(uid));
+        return folderListRef.snapshotChanges().pipe(
+            map(changes => 
+              changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+            )
+        );
+    }
+
+    getAllPublicFolders()
+    {
+        const folderListRef = this.database.list<Folder>("folders", ref => ref.orderByChild('isPublic').equalTo('true'));
         return folderListRef.snapshotChanges().pipe(
             map(changes => 
               changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
