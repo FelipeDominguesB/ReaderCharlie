@@ -13,6 +13,7 @@
   </mat-form-field>
 
 
+  <mat-error *ngIf="loginFailed">Erro ao realizar o login</mat-error>
   <div class="buttons-div">
     <button mat-raised-button color="primary"
     (click)="onSubmit()"

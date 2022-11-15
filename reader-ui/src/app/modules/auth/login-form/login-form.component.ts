@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-authentication.service';
 
 @Component({
@@ -11,7 +12,8 @@ import { FirebaseAuthenticationService } from 'src/app/@core/services/firebase-a
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, public firebaseAuthentication: FirebaseAuthenticationService) {
+  loginFailed: boolean = false;
+  constructor(private formBuilder: FormBuilder, private router: Router, public firebaseAuthentication: FirebaseAuthenticationService, private angularFireAuth: AngularFireAuth) {
 
     this.loginForm = this.formBuilder.group({
         email: ['', [Validators.required, Validators.email] ],
@@ -26,7 +28,19 @@ export class LoginFormComponent implements OnInit {
 
   onSubmit()
   {
-      this.firebaseAuthentication.login(this.f.email.value, this.f.password.value)
+    this.loginFailed = false
+    this.angularFireAuth.signInWithEmailAndPassword(this.f.email.value, this.f.password.value)
+        .then(() => {
+          
+          return this.firebaseAuthentication.saveInformationOnStorage();
+        })
+        .then(() => {
+          setTimeout(() =>{
+            this.router.navigate(['/folders']);
+          }, 100);
+
+        })
+        .catch(err => { this.loginFailed = true});
   }
 
   public getEmailErrorMessage() {
