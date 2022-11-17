@@ -37,13 +37,17 @@ export class FolderListComponent implements OnInit {
     {
       this.firebaseFolderService.getAllPublicFolders().subscribe(folderList =>{
         this.folders = folderList;
+        console.log(this.folders);
       });
     }
     else{
       this.firebaseFolderService.getUserFolders().subscribe(folderList =>{
         this.folders = folderList;
+        console.log(this.folders);
       });
     }
+
+    console.log(this.folders);
     
   }
 
@@ -74,16 +78,6 @@ export class FolderListComponent implements OnInit {
         }
       });
 
-
-      // let folderName = prompt("Informe o nome da pasta");
-      
-      // if(folderName == null || folderName == undefined || folderName?.trim() == "")
-      // {
-      //     alert("Necessário informar um nome!");
-      //     return;
-      // }
-
-      // this.firebaseFolderService.createFolder(folderName);
   }
 
   deleteFolder(folder: Folder)

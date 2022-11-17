@@ -6,9 +6,9 @@
             <mat-icon>create_new_folder</mat-icon>
             <label>Criar pasta</label>
         </div>
-        <div class="folder" *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)"  [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
-            <mat-icon>folder</mat-icon>
-            <label>{{ folder.name }}</label>
+        <div *ngFor="let folder of folders" mat-button [matMenuTriggerFor]="menu" (click)="selectFolder(folder)"  [className]="folder == selectedFolder ? 'folder selected' : 'folder'">
+            <mat-icon >folder</mat-icon>
+            <label [className]="folder.isAgeRestricted ? 'restricted' : 'non-restricted'" >{{ folder.name }}</label>
             <mat-menu #menu="matMenu" xPosition="before">
                 <button mat-menu-item routerLink="/folders/{{folder.key}}">Abrir</button>
                 <button mat-menu-item (click)="fileUpload.click()" *ngIf="!showPublicFolders">Adicionar arquivos</button>

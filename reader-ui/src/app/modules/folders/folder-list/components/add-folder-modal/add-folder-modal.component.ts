@@ -27,8 +27,8 @@ export class AddFolderModalComponent implements OnInit {
   {
       this.dialogRef.close({
         folderName: this.f.folderName.value,
-        isPublic: this.f.isPublic.value,
-        isAgeRestricted: this.f.ageRestricted.value
+        isPublic: (this.f.isPublic.value == "true") ,
+        isAgeRestricted: (this.f.ageRestricted.value ? true : false)
       });
   }
 
