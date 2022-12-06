@@ -50,3 +50,6 @@ Thumbs.db
 /.env
 env
 *.env
+
+*/environment.prod.ts
+*/environment.ts
